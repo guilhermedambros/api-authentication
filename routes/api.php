@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//Recebe POST com credenciais para validar login e retorna true (com api_token) ou false
+Route::post('login', 'Auth\LoginController@authenticate');
+
+//Grupo de rotas que necessita api_token
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::get('/users', 'ApiController@users')->name('users');
+});
